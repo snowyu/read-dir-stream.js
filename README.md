@@ -13,8 +13,8 @@ use it directly:
 
 ```js
 var fs = require('graceful-fs')
-var CustomReaddirStream = require('read-dir-stream')
-var stream = CustomReaddirStream(dirName, {readdirFn:fs.readdir, statFn: fs.stat})
+var ReadDirStream = require('read-dir-stream')
+var stream = ReadDirStream(dirName, {readdirFn:fs.readdir, statFn: fs.stat})
 
 ```
 
@@ -23,17 +23,17 @@ inherits from:
 ```js
 var fs = require('graceful-fs')
 var inherits = require('inherits-ex')
-var ReaddirStream = require('read-dir-stream')
-function MyReaddirStream() {
-  ReaddirStream.apply(this, arguments)
+var ReadDirStream = require('read-dir-stream')
+function MyReadDirStream() {
+  ReadDirStream.apply(this, arguments)
 }
 
-inherits(MyReaddirStream, ReaddirStream);
+inherits(MyReadDirStream, ReadDirStream);
 
-MyReaddirStream.prototype._readdir = fs.readdir;
-MyReaddirStream.prototype._stat = fs.stat;
+MyReadDirStream.prototype._readdir = fs.readdir;
+MyReadDirStream.prototype._stat = fs.stat;
 
-var stream = new MyReaddirStream('.', readdir)
+var stream = new MyReadDirStream('.', readdir)
 
 stream.on('data', function(file){
   console.log(file.path)
