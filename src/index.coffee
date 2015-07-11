@@ -1,12 +1,11 @@
 inherits      = require 'inherits-ex'
-path          = require 'path-ex'
+path          = require 'path.js'
 isNumber      = require 'util-ex/lib/is/type/number'
 isFunction    = require 'util-ex/lib/is/type/function'
 isObject      = require 'util-ex/lib/is/type/object'
 defineProperty= require 'util-ex/lib/defineProperty'
 Readable      = require('stream').Readable
 Readable      = require('readable-stream').Readable unless Readable
-pathJoin      = path.join
 
 module.exports = class ReaddirStream
   inherits ReaddirStream, Readable
@@ -47,10 +46,14 @@ module.exports = class ReaddirStream
     done(new Error 'readdir function is not provided.')
   _stat: (file, done)->
     done(new Error 'stat function is not provided.')
+  isAllowedDeepth: (file)->
+    file = path.relative @_cwd, file
+    deepth = path.toArray(file)
+    deepth.length < @_deepth
   readdir: (dir, cb)->
     @_readdir dir, (err, result)->
       if not err
-        result = result.map (file)->pathJoin(dir, file)
+        result = result.map (file)->path.join(dir, file)
       cb(err, result)
   _read: ->
     queue = @_queue
@@ -58,7 +61,6 @@ module.exports = class ReaddirStream
     pushDir = (dir, stat)=>
       @readdir dir, (err, list)=>
         if not err
-          @_deepth--
           queue.push.apply queue, list
           if cwd isnt dir # skip the dir itself.
             @push @_makeObj dir, stat, cwd
@@ -71,7 +73,7 @@ module.exports = class ReaddirStream
       file = queue.shift()
       @_stat file, (err, stat)=>
         if not err
-          if stat.isDirectory() and @_deepth>=0
+          if stat.isDirectory() and @isAllowedDeepth(file)
             pushDir file, stat
           else
             @push @_makeObj file, stat, cwd

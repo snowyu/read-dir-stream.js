@@ -7,7 +7,7 @@ assert          = chai.assert
 chai.use(sinonChai)
 
 fs              = require 'fs'
-path            = require 'path-ex'
+path            = require 'path.js'
 inherits        = require 'inherits-ex/lib/inherits'
 extend          = require 'util-ex/lib/_extend'
 ReaddirStream   = require '../src/'
@@ -41,26 +41,26 @@ describe 'ReaddirStream', ->
       stream = ReaddirStream(path.join(__dirname, 'fixtures'), readdirFn: fs.readdir, statFn: fs.stat)
       result = []
       stream.on 'error', (err)->
-        console.log 'err', err
         done(err)
       stream.on 'end', ->
-        result.should.have.length 5
+        result.should.have.length 4
         done()
       stream.on 'data', (file)->
         result.push path.relative file.cwd, file.path
   describe '.on("data")', ->
     lvl1 = [
-      '.backup'
       '123.md'
       'folder'
       'index.md'
       'readme.md'
     ]
     lvl2 = lvl1.concat [
+      'folder/.test'
       'folder/README'
       'folder/sub1'
     ]
     lvl3 = lvl2.concat [
+      'folder/.test/index'
       'folder/sub1/2'
       'folder/sub1/readme'
       'folder/sub1/sub2'
@@ -70,6 +70,7 @@ describe 'ReaddirStream', ->
     ]
     it 'should get Stream data via defaults', (done)->
       stream = FReaddirStream(path.join(__dirname, 'fixtures'))
+      stream._deepth.should.be.equal 1
       result = []
       stream.on 'error', (err)->
         done(err)
