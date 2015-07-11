@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "inherits-ex": "^1.0.7",
-    "path-ex": "0.0.1",
+    "path.js": "^1.0.3",
     "readable-stream": "^2.0.1",
     "util-ex": "^0.3.4"
   },
