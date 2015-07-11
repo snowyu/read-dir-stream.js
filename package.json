@@ -1,0 +1,76 @@
+{
+  "name": "read-dir-stream",
+  "description": "an object stream to emit each file in a dir, set your `readdir`, `stat` function to use it.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/snowyu/read-dir-stream.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/snowyu/read-dir-stream.js.git"
+  },
+  "files": [
+    "README.md",
+    "LICENSE-MIT",
+    "*.js",
+    "*.coffee",
+    "test",
+    "src",
+    "lib"
+  ],
+  "keywords": [
+    "readable",
+    "stream",
+    "dir",
+    "directory",
+    "readdir",
+    "abstract",
+    "class",
+    "klass"
+  ],
+  "dependencies": {
+    "inherits-ex": "^1.0.7",
+    "path-ex": "0.0.1",
+    "readable-stream": "^2.0.1",
+    "util-ex": "^0.3.4"
+  },
+  "devDependencies": {
+    "chai": "~1.10.0",
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-coffee": "~0.12.0",
+    "grunt-contrib-copy": "~0.7.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-mocha-test": "~0.12.6",
+    "grunt-newer": "~0.8.0",
+    "grunt-release": "~0.9.0",
+    "mocha": "~2.1.0",
+    "pre-commit": "~1.0.2",
+    "rimraf": "~2.2.8",
+    "shasum": "1.0.0",
+    "sinon": "~1.12.2",
+    "sinon-chai": "~2.6.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "contributors": [
+    {
+      "name": "Riceball LEE",
+      "email": "snowyu.lee@gmail.com",
+      "url": "https://github.com/snowyu"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Riceball LEE",
+      "email": "snowyu.lee@gmail.com"
+    }
+  ],
+  "pre-commit": [
+    "test"
+  ],
+  "bugs": {
+    "url": "https://github.com/snowyu/read-dir-stream.js/issues"
+  },
+  "license": "MIT",
+  "stability": "unstable"
+}
