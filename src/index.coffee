@@ -38,10 +38,7 @@ module.exports = class ReaddirStream
     defineProperty @, '_cwd', dir
     defineProperty @, '_queue', [dir]
     defineProperty @, '_deepth', deepth
-  _makeObj: (file, stat, cwd)->
-    path: file
-    stat: stat
-    cwd: cwd
+  #_makeObj: (options)->options
   _readdir: (dir, done)->
     done(new Error 'readdir function is not provided.')
   _stat: (file, done)->
@@ -63,7 +60,9 @@ module.exports = class ReaddirStream
         if not err
           queue.push.apply queue, list
           if cwd isnt dir # skip the dir itself.
-            @push @_makeObj dir, stat, cwd
+            oFile = path:dir, stat:stat, cwd:cwd
+            oFile = @_makeObj(oFile) if @_makeObj
+            @push oFile
           else @_read()
         else
           @emit('error', err)
@@ -76,7 +75,9 @@ module.exports = class ReaddirStream
           if stat.isDirectory() and @isAllowedDeepth(file)
             pushDir file, stat
           else
-            @push @_makeObj file, stat, cwd
+            oFile = path:file, stat:stat, cwd:cwd
+            oFile = @_makeObj(oFile) if @_makeObj
+            @push oFile
         else
           @emit('error', err)
         return

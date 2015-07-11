@@ -116,11 +116,14 @@ describe 'ReaddirStream', ->
 
     it 'should use custom makeObj function', (done)->
       len = 0
-      makeObj = (file, stat, cwd)->
+      makeObj = (file)->
         len++
-        should.exist stat
-        stat.should.be.instanceof fs.Stats
-        path.relative cwd, file
+        should.exist file
+        should.exist file.stat
+        should.exist file.stat
+        should.exist file.cwd
+        file.stat.should.be.instanceof fs.Stats
+        path.relative file.cwd, file.path
       stream = FReaddirStream(path.join(__dirname, 'fixtures'), makeObjFn: makeObj)
       result = []
       stream.on 'error', (err)->

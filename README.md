@@ -45,15 +45,14 @@ stream.on('data', function(file){
 ### constructor(dirName, options)
 
 * options:
-  * readdirFn *(function)*: the readdir function you must be provided
-  * statFn *(function)*: the stat function to get the file's stat(must be provided).
-  * makeObjFn *(function)*: the optional makeObj callback function to make a file object.
-    * the file, stat, cwd aruments will be passed through the function.
-      * the file is the file path.
-      * the stat is the file stats object if any.
-      * the cwd is the dirName to read the dir.
-    * the default makeObj function will return the object like this:
-      * {path: file, stat: stat, cwd: cwd}
+  * `readdirFn` *[function(dirName, done)]*: the readdir function you must be provided
+  * `statFn` *[function(fileName, done)]*: the stat function to get the file's stat(must be provided).
+  * `makeObjFn` *[function(file)]*: the optional makeObj callback function to make a file object.
+    * the `file` object will be passed to makeObjFn function:
+      * `path`: is the file path.
+      * `stat`: is the file stats object if any.
+      * `cwd`: is the dirName of read-dir.
+    * this `file` object is used as the default if no makeObjFn provided.
   * deepth *(number)*: the recursive deepth of readdir. defaults to 1.
 
 
