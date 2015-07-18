@@ -10,35 +10,35 @@ fs              = require 'fs'
 path            = require 'path.js'
 inherits        = require 'inherits-ex/lib/inherits'
 extend          = require 'util-ex/lib/_extend'
-ReaddirStream   = require '../src/'
+ReadDirStream   = require '../src/'
 setImmediate    = setImmediate || process.nextTick
 
-class FReaddirStream
-  inherits FReaddirStream, ReaddirStream
+class FReadDirStream
+  inherits FReadDirStream, ReadDirStream
   constructor: (dir, opts)->
-    return new FReaddirStream(dir, opts) unless this instanceof FReaddirStream
+    return new FReadDirStream(dir, opts) unless this instanceof FReadDirStream
     super
   _readdir: fs.readdir
   _stat: fs.stat
   
-describe 'ReaddirStream', ->
+describe 'ReadDirStream', ->
   describe '.constructor()', ->
     it 'should create an abstract readdir Stream', (done)->
-      stream = ReaddirStream()
+      stream = ReadDirStream()
       stream.on 'error', (err)->
         err.message.should.have.include 'stat'
         done()
       stream.on 'data', ->
         done(new Error 'should no data')
     it 'should create an abstract readdir Stream(missing statFn)', (done)->
-      stream = ReaddirStream('.', statFn: fs.stat)
+      stream = ReadDirStream('.', statFn: fs.stat)
       stream.on 'error', (err)->
         err.message.should.have.include 'readdir'
         done()
       stream.on 'data', ->
         done(new Error 'should no data')
     it 'should create an readdir Stream', (done)->
-      stream = ReaddirStream(path.join(__dirname, 'fixtures'), readdirFn: fs.readdir, statFn: fs.stat)
+      stream = ReadDirStream(path.join(__dirname, 'fixtures'), readdirFn: fs.readdir, statFn: fs.stat)
       result = []
       stream.on 'error', (err)->
         done(err)
@@ -69,7 +69,7 @@ describe 'ReaddirStream', ->
       'folder/sub1/sub2/index.md'
     ]
     it 'should get Stream data via defaults', (done)->
-      stream = FReaddirStream(path.join(__dirname, 'fixtures'))
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'))
       stream._deepth.should.be.equal 1
       result = []
       stream.on 'error', (err)->
@@ -80,7 +80,7 @@ describe 'ReaddirStream', ->
       stream.on 'data', (file)->
         result.push path.relative file.cwd, file.path
     it 'should get Stream data via depth level 2', (done)->
-      stream = FReaddirStream(path.join(__dirname, 'fixtures'), deepth:2)
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'), deepth:2)
       stream.should.have.property '_deepth', 2
       result = []
       stream.on 'error', (err)->
@@ -92,7 +92,7 @@ describe 'ReaddirStream', ->
         result.push path.relative file.cwd, file.path
 
     it 'should get Stream data via depth level 3', (done)->
-      stream = FReaddirStream(path.join(__dirname, 'fixtures'), deepth:3)
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'), deepth:3)
       stream.should.have.property '_deepth', 3
       result = []
       stream.on 'error', (err)->
@@ -103,7 +103,7 @@ describe 'ReaddirStream', ->
       stream.on 'data', (file)->
         result.push path.relative file.cwd, file.path
     it 'should get Stream data via depth level 4', (done)->
-      stream = FReaddirStream(path.join(__dirname, 'fixtures'), deepth:4)
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'), deepth:4)
       stream.should.have.property '_deepth', 4
       result = []
       stream.on 'error', (err)->
@@ -124,7 +124,7 @@ describe 'ReaddirStream', ->
         should.exist file.cwd
         file.stat.should.be.instanceof fs.Stats
         path.relative file.cwd, file.path
-      stream = FReaddirStream(path.join(__dirname, 'fixtures'), makeObjFn: makeObj)
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'), makeObjFn: makeObj)
       result = []
       stream.on 'error', (err)->
         done(err)
@@ -135,7 +135,7 @@ describe 'ReaddirStream', ->
       stream.on 'data', (file)->
         result.push file
     it 'should get Stream data via cwd', (done)->
-      stream = FReaddirStream('fixtures', cwd:__dirname, deepth:2)
+      stream = FReadDirStream('fixtures', cwd:__dirname, deepth:2)
       stream.should.have.property '_deepth', 2
       result = []
       stream.on 'error', (err)->
