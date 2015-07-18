@@ -45,13 +45,14 @@ stream.on('data', function(file){
 ### constructor(dirName, options)
 
 * options:
+  * `cwd` *(String)*: optional the current working directory.
   * `readdirFn` *[function(dirName, done)]*: the readdir function you must be provided
   * `statFn` *[function(fileName, done)]*: the stat function to get the file's stat(must be provided).
   * `makeObjFn` *[function(file)]*: the optional makeObj callback function to make a file object.
     * the `file` object will be passed to makeObjFn function:
       * `path`: is the file path.
       * `stat`: is the file stats object if any.
-      * `cwd`: is the dirName of read-dir.
+      * `cwd`: is the dirName of read-dir or cwd if cwd option exist.
     * this `file` object is used as the default if no makeObjFn provided.
   * deepth *(number)*: the recursive deepth of readdir. defaults to 1.
 
