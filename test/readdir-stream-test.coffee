@@ -134,3 +134,14 @@ describe 'ReaddirStream', ->
         done()
       stream.on 'data', (file)->
         result.push file
+    it 'should get Stream data via cwd', (done)->
+      stream = FReaddirStream('fixtures', cwd:__dirname, deepth:2)
+      stream.should.have.property '_deepth', 2
+      result = []
+      stream.on 'error', (err)->
+        done(err)
+      stream.on 'end', ->
+        result.should.be.deep.equal lvl2
+        done()
+      stream.on 'data', (file)->
+        result.push path.relative path.join(file.cwd, 'fixtures'), file.path
