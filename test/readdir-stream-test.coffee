@@ -20,7 +20,7 @@ class FReadDirStream
     super
   _readdir: fs.readdir
   _stat: fs.stat
-  
+
 describe 'ReadDirStream', ->
   describe '.constructor()', ->
     it 'should create an abstract readdir Stream', (done)->
@@ -145,3 +145,17 @@ describe 'ReadDirStream', ->
         done()
       stream.on 'data', (file)->
         result.push path.relative path.join(file.cwd, 'fixtures'), file.path
+    it 'should use custom makeObj function to filter', (done)->
+      makeObj = (file)->
+        result = path.relative file.cwd, file.path
+        result = null if path.extname(result) is '.md'
+        result
+      stream = FReadDirStream(path.join(__dirname, 'fixtures'), makeObjFn: makeObj)
+      result = []
+      stream.on 'error', (err)->
+        done(err)
+      stream.on 'end', ->
+        result.should.be.deep.equal ['folder']
+        done()
+      stream.on 'data', (file)->
+        result.push file

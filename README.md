@@ -53,6 +53,7 @@ stream.on('data', function(file){
       * `path`: is the file path.
       * `stat`: is the file stats object if any.
       * `cwd`: is the dirName of read-dir or cwd if cwd option exist.
+    * this `file` will be ignored if return null.
     * this `file` object is used as the default if no makeObjFn provided.
   * deepth *(number)*: the recursive deepth of readdir. defaults to 1.
 

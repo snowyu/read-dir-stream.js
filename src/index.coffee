@@ -69,7 +69,10 @@ module.exports = class ReaddirStream
           if base isnt dir
             oFile = path:dir, stat:stat, cwd:cwd
             oFile = @_makeObj(oFile) if @_makeObj
-            @push oFile
+            if oFile?
+              @push oFile
+            else #skip this
+              @_read()
           else # skip the base dir itself.
             @_read()
         else
@@ -85,7 +88,10 @@ module.exports = class ReaddirStream
           else
             oFile = path:file, stat:stat, cwd:cwd
             oFile = @_makeObj(oFile) if @_makeObj
-            @push oFile
+            if oFile?
+              @push oFile
+            else #skip this
+              @_read()
         else
           @emit('error', err)
         return
