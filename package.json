@@ -1,7 +1,7 @@
 {
   "name": "read-dir-stream",
   "description": "an object stream to emit each file in a dir, set your `readdir`, `stat` function to use it.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "homepage": "https://github.com/snowyu/read-dir-stream.js",
   "repository": {
     "type": "git",
